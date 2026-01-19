@@ -20,7 +20,9 @@
   </head>
   <body class="bg-light">
     <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3 mb-4">
-      <div class="container">
+      <div
+        class="container d-flex align-items-center justify-content-between center"
+      >
         <a class="navbar-brand d-flex align-items-center gap-2" href="#">
           <div
             class="icon-box bg-purple-gradient text-white rounded-4 d-flex align-items-center justify-content-center shadow-purple-glow"
@@ -43,12 +45,14 @@
 
         <div class="d-flex align-items-center gap-3">
           <button
-            class="btn btn-purple-gradient text-white rounded-3 px-3 py-2 d-none d-md-flex align-items-center gap-2"
+            class="btn btn-purple-gradient text-white rounded-3 px-3 py-2 d-flex align-items-center gap-2"
             data-bs-toggle="modal"
             data-bs-target="#addContactModal"
           >
             <i class="fa-solid fa-plus" style="font-size: 13px"></i>
-            <span class="fw-medium" style="font-size: 14px">Add Contact</span>
+            <span class="fw-medium d-none d-md-block" style="font-size: 14px"
+              >Add Contact</span
+            >
           </button>
           <button
             class="btn btn-light rounded-4 text-muted"
@@ -249,8 +253,16 @@
             <form>
               <div class="mb-4 text-center">
                 <div
+                  id="profilePlaceholder"
                   class="profile-placeholder bg-blue-vibrant text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2 shadow-sm"
-                  style="width: 100px; height: 100px; font-size: 2.5rem"
+                  style="
+                    width: 100px;
+                    height: 100px;
+                    font-size: 2.5rem;
+                    overflow: hidden;
+                    background-size: cover;
+                    background-position: center;
+                  "
                 >
                   <i class="fa-solid fa-user"></i>
                 </div>
@@ -258,9 +270,16 @@
                   <button
                     type="button"
                     class="btn btn-light btn-sm rounded-pill px-3 text-muted fw-bold border-0 shadow-sm"
+                    onclick="document.getElementById('imageInput').click()"
                   >
                     <i class="fa-solid fa-camera me-1"></i> Change Photo
                   </button>
+                  <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/*"
+                    class="d-none"
+                  />
                 </div>
               </div>
 

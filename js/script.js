@@ -14,14 +14,30 @@ var favoritesList = document.getElementById("favoritesList");
 var emergencyList = document.getElementById("emergencyList");
 var modalTitle = document.getElementById("modalTitle");
 var btnText = document.getElementById("btnText");
+var imageInput = document.getElementById("imageInput");
+var profilePlaceholder = document.getElementById("profilePlaceholder");
 
 var contacts = [];
 var currentIndex = null;
+var currentImage = "";
 
 if (localStorage.getItem("contactsContainer") !== null) {
   contacts = JSON.parse(localStorage.getItem("contactsContainer"));
   displayContacts();
 }
+
+imageInput.addEventListener("change", function () {
+  var file = imageInput.files[0];
+  if (file) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      currentImage = e.target.result;
+      profilePlaceholder.innerHTML = `<img src="${currentImage}" class="w-100 h-100 rounded-circle" style="object-fit: cover;">`;
+      profilePlaceholder.classList.remove("bg-blue-vibrant", "text-white");
+    };
+    reader.readAsDataURL(file);
+  }
+});
 
 function addContact() {
   if (validateInputs() === true) {
@@ -34,6 +50,7 @@ function addContact() {
       contacts[currentIndex].notes = notesInput.value;
       contacts[currentIndex].favorite = favoriteInput.checked;
       contacts[currentIndex].emergency = emergencyInput.checked;
+      contacts[currentIndex].image = currentImage;
 
       currentIndex = null;
       modalTitle.innerText = "Add New Contact";
@@ -48,6 +65,7 @@ function addContact() {
         notes: notesInput.value,
         favorite: favoriteInput.checked,
         emergency: emergencyInput.checked,
+        image: currentImage,
       };
       contacts.push(contact);
     }
@@ -76,6 +94,11 @@ function clearForm() {
   favoriteInput.checked = false;
   emergencyInput.checked = false;
 
+  imageInput.value = "";
+  currentImage = "";
+  profilePlaceholder.innerHTML = '<i class="fa-solid fa-user"></i>';
+  profilePlaceholder.classList.add("bg-blue-vibrant", "text-white");
+
   currentIndex = null;
   modalTitle.innerText = "Add New Contact";
   btnText.innerText = "Save Contact";
@@ -94,6 +117,16 @@ function setFormForUpdate(index) {
   notesInput.value = contacts[index].notes;
   favoriteInput.checked = contacts[index].favorite;
   emergencyInput.checked = contacts[index].emergency;
+
+  if (contacts[index].image) {
+    currentImage = contacts[index].image;
+    profilePlaceholder.innerHTML = `<img src="${currentImage}" class="w-100 h-100 rounded-circle" style="object-fit: cover;">`;
+    profilePlaceholder.classList.remove("bg-blue-vibrant", "text-white");
+  } else {
+    currentImage = "";
+    profilePlaceholder.innerHTML = '<i class="fa-solid fa-user"></i>';
+    profilePlaceholder.classList.add("bg-blue-vibrant", "text-white");
+  }
 
   var modalElement = document.getElementById("addContactModal");
   var modal = bootstrap.Modal.getOrCreateInstance(modalElement);
@@ -129,14 +162,28 @@ function getCardHTML(contact, index) {
     ? "fa-solid text-danger"
     : "fa-regular text-muted";
 
+  var profileImageHTML;
+  if (contact.image) {
+    profileImageHTML = `<img src="${contact.image}" class="w-100 h-100 rounded-4" style="object-fit: cover;">`;
+  } else {
+    profileImageHTML = contact.name.charAt(0).toUpperCase();
+  }
+
+  var profileContainerStyle = contact.image
+    ? "width: 80px; height: 80px; overflow: hidden;"
+    : "width: 80px; height: 80px; font-size: 2rem;";
+
+  var profileContainerClass = contact.image
+    ? "rounded-4 shadow-sm flex-shrink-0"
+    : "rounded-4 bg-purple-gradient d-flex align-items-center justify-content-center text-white fw-bold shadow-purple-glow flex-shrink-0";
+
   return `
     <div class="col-xl-6 col-md-6">
         <div class="card border-0 shadow-sm rounded-4 h-100 mb-2">
           <div class="card-body p-4">
             <div class="d-flex align-items-center gap-4 mb-4">
-              <div class="rounded-4 bg-purple-gradient d-flex align-items-center justify-content-center text-white fw-bold shadow-purple-glow flex-shrink-0" 
-                   style="width: 80px; height: 80px; font-size: 2rem;">
-                ${contact.name.charAt(0).toUpperCase()}
+              <div class="${profileContainerClass}" style="${profileContainerStyle}">
+                ${profileImageHTML}
               </div>
               
               <div class="flex-grow-1">
@@ -264,16 +311,24 @@ function displaySideLists() {
   var favCartona = "";
   if (favContacts.length > 0) {
     for (let i = 0; i < favContacts.length; i++) {
+      var imgHTML = favContacts[i].image
+        ? `<img src="${favContacts[i].image}" class="w-100 h-100 rounded-circle" style="object-fit: cover;">`
+        : favContacts[i].name.charAt(0).toUpperCase();
+
+      var imgContainerClass = favContacts[i].image
+        ? "rounded-circle shadow-sm flex-shrink-0"
+        : "rounded-circle bg-warning text-white d-flex align-items-center justify-content-center fw-bold shadow-sm flex-shrink-0";
+
       favCartona += `
-            <div class="d-flex align-items-center gap-3 mb-3 p-2 rounded-3 hover-bg-light">
-                <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center fw-bold shadow-sm flex-shrink-0" style="width: 40px; height: 40px;">
-                  ${favContacts[i].name.charAt(0).toUpperCase()}
-                </div>
-                <div class="overflow-hidden">
-                  <h6 class="fw-bold mb-0 text-truncate text-dark">${favContacts[i].name}</h6>
-                  <small class="text-muted">${favContacts[i].phone}</small>
-                </div>
-            </div>`;
+        <div class="d-flex align-items-center gap-3 mb-3 p-2 rounded-3 hover-bg-light">
+            <div class="${imgContainerClass}" style="width: 40px; height: 40px; overflow: hidden;">
+              ${imgHTML}
+            </div>
+            <div class="overflow-hidden">
+              <h6 class="fw-bold mb-0 text-truncate text-dark">${favContacts[i].name}</h6>
+              <small class="text-muted">${favContacts[i].phone}</small>
+            </div>
+        </div>`;
     }
     favoritesList.innerHTML = favCartona;
   } else {
@@ -285,16 +340,24 @@ function displaySideLists() {
   var emCartona = "";
   if (emContacts.length > 0) {
     for (let i = 0; i < emContacts.length; i++) {
+      var imgHTML = emContacts[i].image
+        ? `<img src="${emContacts[i].image}" class="w-100 h-100 rounded-circle" style="object-fit: cover;">`
+        : emContacts[i].name.charAt(0).toUpperCase();
+
+      var imgContainerClass = emContacts[i].image
+        ? "rounded-circle shadow-sm flex-shrink-0"
+        : "rounded-circle bg-danger text-white d-flex align-items-center justify-content-center fw-bold shadow-sm flex-shrink-0";
+
       emCartona += `
-            <div class="d-flex align-items-center gap-3 mb-3 p-2 rounded-3 hover-bg-light">
-                <div class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center fw-bold shadow-sm flex-shrink-0" style="width: 40px; height: 40px;">
-                  ${emContacts[i].name.charAt(0).toUpperCase()}
-                </div>
-                <div class="overflow-hidden">
-                  <h6 class="fw-bold mb-0 text-truncate text-dark">${emContacts[i].name}</h6>
-                  <small class="text-muted">${emContacts[i].phone}</small>
-                </div>
-            </div>`;
+        <div class="d-flex align-items-center gap-3 mb-3 p-2 rounded-3 hover-bg-light">
+            <div class="${imgContainerClass}" style="width: 40px; height: 40px; overflow: hidden;">
+              ${imgHTML}
+            </div>
+            <div class="overflow-hidden">
+              <h6 class="fw-bold mb-0 text-truncate text-dark">${emContacts[i].name}</h6>
+              <small class="text-muted">${emContacts[i].phone}</small>
+            </div>
+        </div>`;
     }
     emergencyList.innerHTML = emCartona;
   } else {

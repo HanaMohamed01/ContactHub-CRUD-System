@@ -127,3 +127,10 @@ body {
   background-color: #fee2e2;
   color: #ef4444;
 }
+
+@media (max-width: 480px) {
+  .center {
+    justify-content: center !important;
+    gap: 1rem !important;
+  }
+}
