@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ContactHub</title>
+    <link rel="icon" href="images/address-book.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -150,6 +151,7 @@
                 </span>
                 <input
                   type="text"
+                  id="searchInput"
                   class="form-control bg-white border-0 py-2"
                   placeholder="Search by name, phone, or email..."
                 />
@@ -158,7 +160,7 @@
           </div>
 
           <div class="contact-list-container">
-            <div class="contact-list" id="contactList"></div>
+            <div class="contact-list row g-3" id="contactList"></div>
 
             <div id="emptyState" class="text-center py-5 mt-5">
               <div
@@ -193,8 +195,8 @@
                 </div>
               </div>
             </div>
-            <div class="card-body bg-white p-5 text-center">
-              <p class="text-muted mb-0 small">No favorites yet</p>
+            <div id="favoritesList" class="card-body bg-white p-3">
+              <p class="text-muted mb-0 small text-center">No favorites yet</p>
             </div>
           </div>
 
@@ -215,8 +217,10 @@
                 </div>
               </div>
             </div>
-            <div class="card-body bg-white p-5 text-center">
-              <p class="text-muted mb-0 small">No emergency contacts</p>
+            <div id="emergencyList" class="card-body bg-white p-3">
+              <p class="text-muted mb-0 small text-center">
+                No emergency contacts
+              </p>
             </div>
           </div>
         </div>
@@ -233,9 +237,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 border-0">
           <div class="modal-header border-0 pb-0">
-            <h5 class="modal-title fw-bold" id="addContactModalLabel">
-              Add New Contact
-            </h5>
+            <h5 class="modal-title fw-bold" id="modalTitle">Add New Contact</h5>
             <button
               type="button"
               class="btn-close"
@@ -245,77 +247,139 @@
           </div>
           <div class="modal-body p-4">
             <form>
-              <div class="mb-3 text-center">
+              <div class="mb-4 text-center">
                 <div
-                  class="upload-placeholder bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                  style="width: 80px; height: 80px; cursor: pointer"
+                  class="profile-placeholder bg-blue-vibrant text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2 shadow-sm"
+                  style="width: 100px; height: 100px; font-size: 2.5rem"
                 >
-                  <i class="fa-solid fa-camera fa-xl text-muted"></i>
+                  <i class="fa-solid fa-user"></i>
                 </div>
-                <p class="small text-muted">Upload Photo</p>
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-light btn-sm rounded-pill px-3 text-muted fw-bold border-0 shadow-sm"
+                  >
+                    <i class="fa-solid fa-camera me-1"></i> Change Photo
+                  </button>
+                </div>
               </div>
+
               <div class="mb-3">
                 <label class="form-label small text-muted fw-bold"
-                  >Full Name</label
+                  >Full Name <span class="text-danger">*</span></label
                 >
-                <div class="input-group">
-                  <span class="input-group-text bg-light border-0"
-                    ><i class="fa-solid fa-user text-muted"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control bg-light border-0"
-                    placeholder="Enter name"
-                  />
-                </div>
+                <input
+                  type="text"
+                  id="nameInput"
+                  class="form-control bg-light border-0 py-2"
+                  placeholder="Enter full name"
+                />
               </div>
+
               <div class="mb-3">
                 <label class="form-label small text-muted fw-bold"
-                  >Phone Number</label
+                  >Phone Number <span class="text-danger">*</span></label
                 >
-                <div class="input-group">
-                  <span class="input-group-text bg-light border-0"
-                    ><i class="fa-solid fa-phone text-muted"></i
-                  ></span>
-                  <input
-                    type="tel"
-                    class="form-control bg-light border-0"
-                    placeholder="Enter phone number"
-                  />
-                </div>
+                <input
+                  type="tel"
+                  id="phoneInput"
+                  class="form-control bg-light border-0 py-2"
+                  placeholder="e.g., 01012345678"
+                />
               </div>
+
               <div class="mb-3">
                 <label class="form-label small text-muted fw-bold"
                   >Email Address</label
                 >
-                <div class="input-group">
-                  <span class="input-group-text bg-light border-0"
-                    ><i class="fa-solid fa-envelope text-muted"></i
-                  ></span>
-                  <input
-                    type="email"
-                    class="form-control bg-light border-0"
-                    placeholder="Enter email address"
-                  />
-                </div>
+                <input
+                  type="email"
+                  id="emailInput"
+                  class="form-control bg-light border-0 py-2"
+                  placeholder="name@example.com"
+                />
               </div>
+
               <div class="mb-3">
                 <label class="form-label small text-muted fw-bold"
-                  >Category</label
+                  >Address</label
                 >
-                <select class="form-select bg-light border-0">
-                  <option selected>Select Category</option>
+                <input
+                  type="text"
+                  id="addressInput"
+                  class="form-control bg-light border-0 py-2"
+                  placeholder="Enter address"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small text-muted fw-bold">Group</label>
+                <select
+                  id="categoryInput"
+                  class="form-select bg-light border-0 py-2"
+                >
+                  <option selected disabled value="">Select a group</option>
                   <option value="Family">Family</option>
                   <option value="Friends">Friends</option>
                   <option value="Work">Work</option>
                 </select>
               </div>
-              <div class="d-grid mt-4">
+
+              <div class="mb-3">
+                <label class="form-label small text-muted fw-bold">Notes</label>
+                <textarea
+                  id="notesInput"
+                  class="form-control bg-light border-0 py-2"
+                  rows="2"
+                  placeholder="Add notes about this contact"
+                ></textarea>
+              </div>
+
+              <div class="d-flex gap-4 mb-4">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="favoriteInput"
+                  />
+                  <label
+                    class="form-check-label small fw-bold text-muted"
+                    for="favoriteInput"
+                  >
+                    <i class="fa-solid fa-star text-warning me-1"></i> Favorite
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="emergencyInput"
+                  />
+                  <label
+                    class="form-check-label small fw-bold text-muted"
+                    for="emergencyInput"
+                  >
+                    <i class="fa-solid fa-heart-pulse text-danger me-1"></i>
+                    Emergency
+                  </label>
+                </div>
+              </div>
+
+              <div class="d-flex gap-2">
                 <button
-                  type="submit"
-                  class="btn btn-purple-gradient text-white rounded-pill py-2 fw-bold"
+                  type="button"
+                  class="btn btn-light w-50 py-2 rounded-3 fw-bold text-muted"
+                  data-bs-dismiss="modal"
                 >
-                  Save Contact
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  id="addBtn"
+                  class="btn btn-purple-gradient text-white w-50 rounded-3 py-2 fw-bold"
+                >
+                  <i class="fa-solid fa-check me-2"></i
+                  ><span id="btnText">Save Contact</span>
                 </button>
               </div>
             </form>
@@ -324,7 +388,7 @@
       </div>
     </div>
 
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>
