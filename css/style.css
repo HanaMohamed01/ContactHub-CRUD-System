@@ -1,0 +1,93 @@
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f8f9fa;
+}
+
+.bg-purple-gradient {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+}
+
+.btn-purple-gradient {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  border: none;
+  box-shadow:
+    0 4px 6px -1px rgba(99, 102, 241, 0.4),
+    0 2px 4px -1px rgba(99, 102, 241, 0.2);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.btn-purple-gradient:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 10px 15px -3px rgba(99, 102, 241, 0.5),
+    0 4px 6px -2px rgba(99, 102, 241, 0.3);
+  color: white;
+}
+
+.shadow-purple-glow {
+  box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+}
+
+.shadow-blue-glow {
+  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+}
+.shadow-orange-glow {
+  box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.39);
+}
+.shadow-red-glow {
+  box-shadow: 0 4px 14px 0 rgba(244, 63, 94, 0.39);
+}
+
+.navbar-brand span {
+  color: #1e293b;
+  font-size: 1.25rem;
+}
+
+.rounded-4 {
+  border-radius: 1rem !important;
+}
+
+.bg-purple-subtle {
+  background-color: #e0e7ff;
+}
+.text-purple {
+  color: #6366f1;
+}
+
+.bg-blue-subtle {
+  background-color: #dbeafe;
+}
+.bg-orange-subtle {
+  background-color: #fff8ec;
+}
+
+.bg-blue-vibrant {
+  background-color: #2563eb;
+}
+.bg-orange-vibrant {
+  background-color: #f59e0b;
+}
+.bg-red-vibrant {
+  background-color: #f43f5e;
+}
+
+.text-blue {
+  color: #2563eb;
+}
+.text-orange {
+  color: #f59e0b;
+}
+.text-red {
+  color: #f43f5e;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  background-color: #f8f9fa;
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+}

@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ContactHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3 mb-4">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+          <div
+            class="icon-box bg-purple-gradient text-white rounded-4 d-flex align-items-center justify-content-center shadow-purple-glow"
+            style="width: 48px; height: 48px"
+          >
+            <i class="fa-solid fa-address-book fa-lg"></i>
+          </div>
+          <div class="lh-1 mt-1 d-flex flex-column">
+            <h1 class="fw-bold mb-0">
+              <div class="d-flex fw-bolder fs-3">
+                Contact
+                <p class="text-purple fw-bold mb-1">Hub</p>
+              </div>
+            </h1>
+            <span class="text-muted fw-normal" style="font-size: 0.9rem"
+              >Smart Contact Manager</span
+            >
+          </div>
+        </a>
+
+        <div class="d-flex align-items-center gap-3">
+          <button
+            class="btn btn-purple-gradient text-white rounded-pill px-4 py-2 d-none d-md-flex align-items-center gap-2"
+            data-bs-toggle="modal"
+            data-bs-target="#addContactModal"
+          >
+            <i class="fa-solid fa-plus fs-6"></i>
+            <span class="fw-medium">Add Contact</span>
+          </button>
+          <button
+            class="btn btn-light rounded-circle text-muted"
+            style="width: 40px; height: 40px"
+          >
+            <i class="fa-regular fa-bell"></i>
+          </button>
+          <button
+            class="btn btn-light rounded-circle text-muted"
+            style="width: 40px; height: 40px"
+          >
+            <i class="fa-solid fa-gear"></i>
+          </button>
+          <div
+            class="profile-pic rounded-4 shadow-sm"
+            style="
+              width: 40px;
+              height: 40px;
+              background-image: url(&quot;https://i.pravatar.cc/150?img=12&quot;);
+              background-size: cover;
+              background-position: center;
+            "
+          ></div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row mb-4 g-3">
+        <div class="col-md-4">
+          <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+            <div class="d-flex align-items-center gap-3">
+              <div
+                class="icon-box bg-blue-vibrant text-white rounded-4 d-flex align-items-center justify-content-center shadow-blue-glow"
+                style="width: 48px; height: 48px"
+              >
+                <i class="fa-solid fa-users fa-lg"></i>
+              </div>
+              <div>
+                <p class="text-muted mb-0 small fw-bold text-uppercase">
+                  Total
+                </p>
+                <h3 class="mb-0 fw-bold">0</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+            <div class="d-flex align-items-center gap-3">
+              <div
+                class="icon-box bg-orange-vibrant text-white rounded-4 d-flex align-items-center justify-content-center shadow-orange-glow"
+                style="width: 48px; height: 48px"
+              >
+                <i class="fa-solid fa-star fa-lg"></i>
+              </div>
+              <div>
+                <p class="text-muted mb-0 small fw-bold text-uppercase">
+                  Favorites
+                </p>
+                <h3 class="mb-0 fw-bold">0</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+            <div class="d-flex align-items-center gap-3">
+              <div
+                class="icon-box bg-red-vibrant text-white rounded-4 d-flex align-items-center justify-content-center shadow-red-glow"
+                style="width: 48px; height: 48px"
+              >
+                <i class="fa-solid fa-heart-pulse fa-lg"></i>
+              </div>
+              <div>
+                <p class="text-muted mb-0 small fw-bold text-uppercase">
+                  Emergency
+                </p>
+                <h3 class="mb-0 fw-bold">0</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-lg-9">
+          <div class="mb-4">
+            <h2 class="fw-bold mb-1">All Contacts</h2>
+            <p class="text-muted">Manage and organize your 0 contacts</p>
+          </div>
+
+          <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-2">
+              <div class="input-group">
+                <span
+                  class="input-group-text bg-white border-0 ps-3 text-muted"
+                >
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control bg-white border-0 py-2"
+                  placeholder="Search by name, phone, or email..."
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-list-container">
+            <div class="contact-list" id="contactList"></div>
+
+            <div id="emptyState" class="text-center py-5 mt-5">
+              <div
+                class="d-inline-flex align-items-center justify-content-center bg-light rounded-4 mb-3"
+                style="width: 80px; height: 80px"
+              >
+                <i
+                  class="fa-solid fa-address-book fa-2x text-muted opacity-50"
+                ></i>
+              </div>
+              <h5 class="fw-bold text-dark mb-1">No contacts found</h5>
+              <p class="text-muted">Click "Add Contact" to get started</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+            <div class="card-body bg-orange-subtle p-4 pb-0">
+              <div class="d-flex align-items-start gap-3 mb-3">
+                <div
+                  class="icon-box bg-warning text-white rounded-3 d-flex align-items-center justify-content-center shadow-orange-glow flex-shrink-0"
+                  style="width: 35px; height: 35px"
+                >
+                  <i class="fa-solid fa-star"></i>
+                </div>
+                <div>
+                  <h6 class="fw-bold mb-1 text-dark">Favorites</h6>
+                  <p class="text-muted mb-0" style="font-size: 0.65rem">
+                    Quick access to starred contacts
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-white p-5 text-center">
+              <p class="text-muted mb-0 small">No favorites yet</p>
+            </div>
+          </div>
+
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-body bg-orange-subtle p-4 pb-0">
+              <div class="d-flex align-items-start gap-3 mb-3">
+                <div
+                  class="icon-box bg-danger text-white rounded-3 d-flex align-items-center justify-content-center shadow-red-glow flex-shrink-0"
+                  style="width: 35px; height: 35px"
+                >
+                  <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div>
+                  <h6 class="fw-bold mb-1 text-dark">Emergency</h6>
+                  <p class="text-muted mb-0" style="font-size: 0.65rem">
+                    Important contacts for urgent calls
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-white p-5 text-center">
+              <p class="text-muted mb-0 small">No emergency contacts</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="addContactModal"
+      tabindex="-1"
+      aria-labelledby="addContactModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title fw-bold" id="addContactModalLabel">
+              Add New Contact
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body p-4">
+            <form>
+              <div class="mb-3 text-center">
+                <div
+                  class="upload-placeholder bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                  style="width: 80px; height: 80px; cursor: pointer"
+                >
+                  <i class="fa-solid fa-camera fa-xl text-muted"></i>
+                </div>
+                <p class="small text-muted">Upload Photo</p>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small text-muted fw-bold"
+                  >Full Name</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-0"
+                    ><i class="fa-solid fa-user text-muted"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control bg-light border-0"
+                    placeholder="Enter name"
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small text-muted fw-bold"
+                  >Phone Number</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-0"
+                    ><i class="fa-solid fa-phone text-muted"></i
+                  ></span>
+                  <input
+                    type="tel"
+                    class="form-control bg-light border-0"
+                    placeholder="Enter phone number"
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small text-muted fw-bold"
+                  >Email Address</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-0"
+                    ><i class="fa-solid fa-envelope text-muted"></i
+                  ></span>
+                  <input
+                    type="email"
+                    class="form-control bg-light border-0"
+                    placeholder="Enter email address"
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small text-muted fw-bold"
+                  >Category</label
+                >
+                <select class="form-select bg-light border-0">
+                  <option selected>Select Category</option>
+                  <option value="Family">Family</option>
+                  <option value="Friends">Friends</option>
+                  <option value="Work">Work</option>
+                </select>
+              </div>
+              <div class="d-grid mt-4">
+                <button
+                  type="submit"
+                  class="btn btn-purple-gradient text-white rounded-pill py-2 fw-bold"
+                >
+                  Save Contact
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
