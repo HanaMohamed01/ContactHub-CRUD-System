@@ -85,17 +85,17 @@ addBtn.addEventListener("click", function () {
 });
 
 function clearForm() {
-  nameInput.value = "";
-  phoneInput.value = "";
-  emailInput.value = "";
-  addressInput.value = "";
-  categoryInput.value = "";
-  notesInput.value = "";
+  nameInput.value = null;
+  phoneInput.value = null;
+  emailInput.value = null;
+  addressInput.value = null;
+  categoryInput.value = null;
+  notesInput.value = null;
   favoriteInput.checked = false;
   emergencyInput.checked = false;
 
-  imageInput.value = "";
-  currentImage = "";
+  imageInput.value = null;
+  currentImage = null;
   profilePlaceholder.innerHTML = '<i class="fa-solid fa-user"></i>';
   profilePlaceholder.classList.add("bg-blue-vibrant", "text-white");
 
